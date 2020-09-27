@@ -792,7 +792,7 @@ class DanbooruApi_Mixin(object):
             'note[height]': height,
             'note[body]': body
             }
-        return self._get('notes/{0}.jso'.format(note_id), params, method='PUT',
+        return self._get('notes/{0}.json'.format(note_id), params, method='PUT',
                          auth=True)
 
     def note_delete(self, note_id):
@@ -988,7 +988,7 @@ class DanbooruApi_Mixin(object):
         return self._get('pool_versions.json', params)
 
     def tag_list(self, name_matches=None, name=None, category=None,
-                 hide_empty=None, has_wiki=None, has_artist=None, order=None):
+                 hide_empty=None, has_wiki=None, has_artist=None, order=None, extra_params={}):
         """Get a list of tags.
 
         Parameters:
@@ -1014,6 +1014,7 @@ class DanbooruApi_Mixin(object):
             'search[has_artist]': has_artist,
             'search[order]': order
             }
+        params.update(extra_params)
         return self._get('tags.json', params)
 
     def tag_show(self, tag_id):
@@ -1033,7 +1034,7 @@ class DanbooruApi_Mixin(object):
                             character respectively).
         """
         param = {'tag[category]': category}
-        return self._get('pools/{0}.json'.format(tag_id), param, method='PUT',
+        return self._get('tags/{0}.json'.format(tag_id), param, method='PUT',
                          auth=True)
 
     def tag_aliases(self, name_matches=None, antecedent_name=None,

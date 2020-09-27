@@ -176,6 +176,9 @@ class _Pybooru(object):
                 })
 
             if response.status_code in (200, 201, 202, 204):
+                # PUT returns empty 204 JSON entry on success
+                if method == 'PUT':
+                    return []
                 return response.json()
             raise PybooruHTTPError("In _request", response.status_code,
                                    response.url)

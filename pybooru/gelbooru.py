@@ -1,22 +1,22 @@
 # coding: utf-8 -*-
 
-"""pybooru.danbooru
+"""pybooru.gelbooru
 
-This module contains Danbooru class for access to API calls, authentication,
+This module contains Gelbooru class for access to API calls, authentication,
 build url and return JSON response.
 
 Classes:
-   Danbooru -- Danbooru main classs.
+   Gelbooru -- Gelbooru main classs.
 """
 
 # Pybooru imports
 from .pybooru import _Pybooru
-from .api_danbooru import DanbooruApi_Mixin
+from .api_gelbooru import GelbooruApi_Mixin
 from .exceptions import PybooruError
 
 
-class Danbooru(_Pybooru, DanbooruApi_Mixin):
-    """Danbooru class (inherits: Pybooru and DanbooruApi_Mixin).
+class Gelbooru(_Pybooru, GelbooruApi_Mixin):
+    """Gelbooru class (inherits: Pybooru and GelbooruApi_Mixin).
 
     To initialize Pybooru, you need to specify one of these two
     parameters: 'site_name' or 'site_url'. If you specify 'site_name', Pybooru
@@ -31,26 +31,26 @@ class Danbooru(_Pybooru, DanbooruApi_Mixin):
 
     Attributes:
         site_name (str): Get or set site name set.
-        site_url (str): Get or set the URL of Moebooru/Danbooru based site.
+        site_url (str): Get or set the URL of Moebooru/Gelbooru based site.
         username (str): Return user name.
         api_key (str): Return API key.
         last_call (dict): Return last call.
     """
 
-    def __init__(self, site_name='', site_url='', username='', api_key='', init_type='danbooru'):
-        """Initialize Danbooru.
+    def __init__(self, site_name='', site_url='', username='', api_key='', init_type='gelbooru'):
+        """Initialize Gelbooru.
 
         Keyword arguments:
             site_name (str): Get or set site name set.
-            site_url (str): Get or set the URL of Moebooru/Danbooru based site.
+            site_url (str): Get or set the URL of Moebooru/Gelbooru based site.
             username (str): Your username of the site (Required only for
                             functions that modify the content).
             api_key (str): Your api key of the site (Required only for
                            functions that modify the content).
             init_type (str): Client type identifier
         """
-        super(Danbooru, self).__init__(site_name, site_url, username)
-        self.type = init_type
+        super(Gelbooru, self).__init__(site_name, site_url, username)
+        self.type = 'gelbooru'
         self.api_key = api_key
 
     def _get(self, api_call, params=None, method='GET', auth=False,
@@ -67,23 +67,12 @@ class Danbooru(_Pybooru, DanbooruApi_Mixin):
         Raise:
             PybooruError: When 'username' or 'api_key' are not set.
         """
-        url = "{0}/{1}".format(self.site_url, api_call)
+        url = "{0}/index.php?page=dapi&s={1}&q=index&json=1".format(self.site_url, api_call)
 
         if method == 'GET':
             request_args = {'params': params}
-        elif method == 'PUT':
-            request_args = {'params': params}
         else:
-            request_args = {'data': params, 'files': file_}
-
-        # Adds auth. Also adds auth if username and api_key are specified
-        # Members+ have less restrictions
-        if auth or (self.username and self.api_key):
-            if self.username and self.api_key:
-                request_args['auth'] = (self.username, self.api_key)
-            else:
-                raise PybooruError("'username' and 'api_key' attribute of "
-                                   "Danbooru are required.")
+            raise Exception("Only GET requests are supported")
 
         # Do call
         return self._request(url, api_call, request_args, method)

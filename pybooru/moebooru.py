@@ -48,7 +48,7 @@ class Moebooru(_Pybooru, MoebooruApi_Mixin):
     """
 
     def __init__(self, site_name='', site_url='', username='', password='',
-                 hash_string='', api_version='1.13.0+update.3'):
+                 hash_string='', api_version='1.13.0+update.3', init_type='moebooru'):
         """Initialize Moebooru.
 
         Keyword arguments:
@@ -62,9 +62,10 @@ class Moebooru(_Pybooru, MoebooruApi_Mixin):
                              functions that modify the content).
             password (str): Your user password in plain text (Required only
                             for functions that modify the content).
+            init_type (str): Client type identifier
         """
         super(Moebooru, self).__init__(site_name, site_url, username)
-
+        self.type = init_type
         self.api_version = api_version.lower()
         self.hash_string = hash_string
         self.password = password
