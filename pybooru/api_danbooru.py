@@ -22,6 +22,16 @@ class DanbooruApi_Mixin(object):
     * Doc: https://danbooru.donmai.us/wiki_pages/43568
     """
 
+    def post_exists(self, post_md5):
+        """Check if a md5 exists in database.
+
+        Parameters:
+            post_md5 (str): 32 char md5 hash string ff00ff00ff00ff00ff00ff00ff00ff00.
+        """
+        url = "{0}/{1}={2}".format(self.site_url, 'posts.json?md5', post_md5)
+        return self._try(url)
+
+
     def post_list(self, **params):
         """Get a list of posts.
 
@@ -69,7 +79,7 @@ class DanbooruApi_Mixin(object):
         params = {
             'post[tag_string]': tag_string,
             'post[rating]': rating,
-            'ost[source]': source,
+            'post[source]': source,
             'post[parent_id]': parent_id,
             'post[has_embedded_notes]': has_embedded_notes,
             'post[is_rating_locked]': is_rating_locked,
@@ -544,14 +554,14 @@ class DanbooruApi_Mixin(object):
         """
         return self._get('artists/{0}.json'.format(artist_id))
 
-    def artist_create(self, name, other_names_comma=None, group_name=None,
+    def artist_create(self, name, other_names=None, group_name=None,
                       url_string=None, body=None):
-        """Function to create an artist (Requires login) (UNTESTED).
+        """Function to create an artist (Requires login).
 
         Parameters:
             name (str):
             other_names_comma (str): List of alternative names for this
-                                     artist, comma delimited.
+                                     artist, space delimited.
             group_name (str): The name of the group this artist belongs to.
             url_string (str): List of URLs associated with this artist,
                               whitespace or newline delimited.
@@ -560,14 +570,14 @@ class DanbooruApi_Mixin(object):
         """
         params = {
             'artist[name]': name,
-            'artist[other_names_comma]': other_names_comma,
+            'artist[other_names_comma]': other_names,
             'artist[group_name]': group_name,
             'artist[url_string]': url_string,
-            'artist[body]': body,
+            'artist[notes]': body,
             }
-        return self.get('artists.json', params, method='POST', auth=True)
+        return self._get('artists.json', params, method='POST', auth=True)
 
-    def artist_update(self, artist_id, name=None, other_names_comma=None,
+    def artist_update(self, artist_id, name=None, other_names=None,
                       group_name=None, url_string=None, body=None):
         """Function to update artists (Requires login) (UNTESTED).
 
@@ -575,7 +585,7 @@ class DanbooruApi_Mixin(object):
             artist_id (str):
             name (str): Artist name.
             other_names_comma (str): List of alternative names for this
-                                     artist, comma delimited.
+                                     artist, space delimited.
             group_name (str): The name of the group this artist belongs to.
             url_string (str): List of URLs associated with this artist,
                               whitespace or newline delimited.
@@ -584,12 +594,12 @@ class DanbooruApi_Mixin(object):
         """
         params = {
             'artist[name]': name,
-            'artist[other_names_comma]': other_names_comma,
+            'artist[other_names_comma]': other_names,
             'artist[group_name]': group_name,
             'artist[url_string]': url_string,
-            'artist[body]': body
+            'artist[notes]': body
             }
-        return self .get('artists/{0}.json'.format(artist_id), params,
+        return self._get('artists/{0}.json'.format(artist_id), params,
                          method='PUT', auth=True)
 
     def artist_delete(self, artist_id):
@@ -1038,7 +1048,7 @@ class DanbooruApi_Mixin(object):
                          auth=True)
 
     def tag_aliases(self, name_matches=None, antecedent_name=None,
-                    tag_id=None):
+                    tag_id=None, extra_params={}):
         """Get tags aliases.
 
         Parameters:
@@ -1051,6 +1061,7 @@ class DanbooruApi_Mixin(object):
             'search[antecedent_name]': antecedent_name,
             'search[id]': tag_id
             }
+        params.update(extra_params)
         return self._get('tag_aliases.json', params)
 
     def tag_implications(self, name_matches=None, antecedent_name=None,

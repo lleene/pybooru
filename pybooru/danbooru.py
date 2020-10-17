@@ -37,7 +37,7 @@ class Danbooru(_Pybooru, DanbooruApi_Mixin):
         last_call (dict): Return last call.
     """
 
-    def __init__(self, site_name='', site_url='', username='', api_key='', init_type='danbooru'):
+    def __init__(self, site_name='', site_url='', username='', api_key=''):
         """Initialize Danbooru.
 
         Keyword arguments:
@@ -47,10 +47,8 @@ class Danbooru(_Pybooru, DanbooruApi_Mixin):
                             functions that modify the content).
             api_key (str): Your api key of the site (Required only for
                            functions that modify the content).
-            init_type (str): Client type identifier
         """
         super(Danbooru, self).__init__(site_name, site_url, username)
-        self.type = init_type
         self.api_key = api_key
 
     def _get(self, api_call, params=None, method='GET', auth=False,

@@ -25,12 +25,14 @@ class GelbooruApi_Mixin(object):
         """Get a list of posts.
 
         Parameters:
-            page (int): The page number.
+            page (int): The page number starting at 1
             tags (str): The tags to search for. Any tag combination that works
                         on the web site will work here. This includes all the
                         meta-tags.
         """
-        params['pid'] = params.pop('page')
+        params['pid'] = params.pop('page')-1
+        if( self.site_name == 'rule34'):
+            return self._get_xml('post', params)
         return self._get('post', params)
 
 
@@ -49,4 +51,6 @@ class GelbooruApi_Mixin(object):
             'order': order,
             'orderby': orderby
             }
+        if( self.site_name == 'rule34'):
+            return self._get_xml('tag', params)
         return self._get('tag', params)

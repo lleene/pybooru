@@ -28,4 +28,5 @@ __author__ = "Daniel Luque <danielluque14[at]gmail[dot]com>"
 from .moebooru import Moebooru
 from .danbooru import Danbooru
 from .gelbooru import Gelbooru
+from .e621 import E621
 from .exceptions import (PybooruError, PybooruAPIError, PybooruHTTPError)

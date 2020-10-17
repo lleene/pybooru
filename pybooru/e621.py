@@ -1,22 +1,21 @@
 # coding: utf-8 -*-
 
-"""pybooru.gelbooru
+"""pybooru.e621
 
-This module contains Gelbooru class for access to API calls, authentication,
+This module contains E621 class for access to API calls, authentication,
 build url and return JSON response.
 
 Classes:
-   Gelbooru -- Gelbooru main classs.
+   E621 -- E621 main classs.
 """
 
 # Pybooru imports
 from .pybooru import _Pybooru
-from .api_gelbooru import GelbooruApi_Mixin
+from .api_e621 import E621Api_Mixin
 from .exceptions import PybooruError
 
-
-class Gelbooru(_Pybooru, GelbooruApi_Mixin):
-    """Gelbooru class (inherits: Pybooru and GelbooruApi_Mixin).
+class E621(_Pybooru, E621Api_Mixin):
+    """E621 class (inherits: Pybooru and E621Api_Mixin).
 
     To initialize Pybooru, you need to specify one of these two
     parameters: 'site_name' or 'site_url'. If you specify 'site_name', Pybooru
@@ -25,24 +24,18 @@ class Gelbooru(_Pybooru, GelbooruApi_Mixin):
 
     Attributes:
         site_name (str): Get or set site name set.
-        site_url (str): Get or set the URL of Moebooru/Gelbooru based site.
-        username (str): Return user name.
-        api_key (str): Return API key.
+        site_url (str): Get or set the URL of Moebooru/E621 based site.
         last_call (dict): Return last call.
     """
 
     def __init__(self, site_name='', site_url='', username='', api_key=''):
-        """Initialize Gelbooru.
+        """Initialize E621.
 
         Keyword arguments:
             site_name (str): Get or set site name set.
-            site_url (str): Get or set the URL of Moebooru/Gelbooru based site.
-            username (str): Your username of the site (Required only for
-                            functions that modify the content).
-            api_key (str): Your api key of the site (Required only for
-                           functions that modify the content).
+            site_url (str): Get or set the URL of Moebooru/E621 based site.
         """
-        super(Gelbooru, self).__init__(site_name, site_url, username)
+        super(E621, self).__init__(site_name, site_url, username)
         self.api_key = api_key
 
     def _get(self, api_call, params=None, method='GET', auth=False,
@@ -59,7 +52,7 @@ class Gelbooru(_Pybooru, GelbooruApi_Mixin):
         Raise:
             PybooruError: When 'username' or 'api_key' are not set.
         """
-        url = "{0}/index.php?page=dapi&s={1}&q=index&json=1".format(self.site_url, api_call)
+        url = "{0}/{1}".format(self.site_url, api_call)
 
         if method == 'GET':
             request_args = {'params': params}
@@ -68,8 +61,3 @@ class Gelbooru(_Pybooru, GelbooruApi_Mixin):
 
         # Do call
         return self._request(url, api_call, request_args, method)
-
-    def _get_xml(self, api_call, params=None):
-        url = "{0}/index.php?page=dapi&s={1}&q=index".format(self.site_url, api_call)
-        request_args = {'params': params}
-        return self._request_xml(url, api_call, request_args)

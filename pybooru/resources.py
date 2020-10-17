@@ -30,7 +30,9 @@ SITE_LIST = {
     'gelbooru': {
         'url': "https://gelbooru.com"},
     'rule34': {
-        'url': "https://rule34.xxx"},  
+        'url': "https://rule34.xxx"},
+    'e621': {
+        'url': "https://e621.net"},
     }
 
 
@@ -55,21 +57,4 @@ HTTP_STATUS_CODE = {
     424: ("Invalid Parameters", "The given parameters were invalid"),
     500: ("Internal Server Error", "Some unknown error occurred on the server"),
     503: ("Service Unavailable", "Server cannot currently handle the request")
-    }
-
-
-# Personal API_LIST
-API_LIST = {
-    'local': {
-        'site_url': "http://192.168.0.7",
-        'username': "ruuruu62",
-        'api_key': "vYaznXQMnSDvaRqgHdUht9nT"},
-    'danbooru': {
-        'site_url': "https://danbooru.donmai.us",
-        'username': "Neko62",
-        'api_key': "i1HjL72dWdSxc7A5XxvUw2TX"},
-    'gelbooru': {
-        'site_url': "https://gelbooru.com",
-        'username': "472004",
-        'api_key': "12fea99e0dec4a67c06111ba17b9c515f77ad978f476f42a436fb7446d0d92b7"},
     }
