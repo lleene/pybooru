@@ -504,8 +504,8 @@ class DanbooruApi_Mixin(object):
                          auth=True)
 
     def artist_list(self, query=None, artist_id=None, creator_name=None,
-                    creator_id=None, is_active=None, is_banned=None,
-                    empty_only=None, order=None):
+                    creator_id=None, any_name_matches=None, is_active=None,
+                    empty_only=None, order=None, is_banned=None, extra_params={}):
         """Get an artist of a list of artists.
 
         Parameters:
@@ -538,12 +538,14 @@ class DanbooruApi_Mixin(object):
             'search[name]': query,
             'search[id]': artist_id,
             'search[creator_name]': creator_name,
+            'search[any_name_matches]': any_name_matches,
             'search[creator_id]': creator_id,
             'search[is_active]': is_active,
             'search[is_banned]': is_banned,
             'search[empty_only]': empty_only,
             'search[order]': order
             }
+        params.update(extra_params)
         return self._get('artists.json', params)
 
     def artist_show(self, artist_id):
@@ -560,7 +562,7 @@ class DanbooruApi_Mixin(object):
 
         Parameters:
             name (str):
-            other_names_comma (str): List of alternative names for this
+            other_names (str): List of alternative names for this
                                      artist, space delimited.
             group_name (str): The name of the group this artist belongs to.
             url_string (str): List of URLs associated with this artist,
@@ -570,10 +572,10 @@ class DanbooruApi_Mixin(object):
         """
         params = {
             'artist[name]': name,
-            'artist[other_names_comma]': other_names,
+            'artist[other_names_string]': other_names,
             'artist[group_name]': group_name,
             'artist[url_string]': url_string,
-            'artist[notes]': body,
+            'artist[body]': body,
             }
         return self._get('artists.json', params, method='POST', auth=True)
 
@@ -584,7 +586,7 @@ class DanbooruApi_Mixin(object):
         Parameters:
             artist_id (str):
             name (str): Artist name.
-            other_names_comma (str): List of alternative names for this
+            other_names (str): List of alternative names for this
                                      artist, space delimited.
             group_name (str): The name of the group this artist belongs to.
             url_string (str): List of URLs associated with this artist,
@@ -594,7 +596,7 @@ class DanbooruApi_Mixin(object):
         """
         params = {
             'artist[name]': name,
-            'artist[other_names_comma]': other_names,
+            'artist[other_names_string]': other_names,
             'artist[group_name]': group_name,
             'artist[url_string]': url_string,
             'artist[notes]': body

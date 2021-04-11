@@ -66,6 +66,15 @@ class Gelbooru(_Pybooru, GelbooruApi_Mixin):
         else:
             raise Exception("Only GET requests are supported")
 
+        # Adds auth. Also adds auth if username and api_key are specified
+        # Members+ have less restrictions
+        if auth or (self.username and self.api_key):
+            if self.username and self.api_key:
+                request_args['auth'] = (self.username, self.api_key)
+            else:
+                raise PybooruError("'username' and 'api_key' attribute of "
+                                   "Danbooru are required.")
+
         # Do call
         return self._request(url, api_call, request_args, method)
 

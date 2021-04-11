@@ -50,6 +50,7 @@ class Danbooru(_Pybooru, DanbooruApi_Mixin):
         """
         super(Danbooru, self).__init__(site_name, site_url, username)
         self.api_key = api_key
+        self.map_category = {'general':'0', 'artist':'1', 'copyright':'3', 'character':'4', 'meta':'5'}
 
     def _get(self, api_call, params=None, method='GET', auth=False,
              file_=None):
@@ -69,7 +70,9 @@ class Danbooru(_Pybooru, DanbooruApi_Mixin):
 
         if method == 'GET':
             request_args = {'params': params}
-        elif method == 'PUT':
+#        elif method == 'PUT':
+#            request_args = {'params': params}
+        elif file_ == None:
             request_args = {'params': params}
         else:
             request_args = {'data': params, 'files': file_}
