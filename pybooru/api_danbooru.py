@@ -1049,18 +1049,21 @@ class DanbooruApi_Mixin(object):
         return self._get('tags/{0}.json'.format(tag_id), param, method='PUT',
                          auth=True)
 
-    def tag_aliases(self, name_matches=None, antecedent_name=None,
+    def tag_aliases(self, name_matches=None, antecedent_name=None, category=None,
                     tag_id=None, extra_params={}):
         """Get tags aliases.
 
         Parameters:
             name_matches (str): Match antecedent or consequent name.
             antecedent_name (str): Match antecedent name (exact match).
+            category (str): Can be: 0, 1, 3, 4 (general, artist, copyright,
+                            character respectively).
             tag_id (int): The tag alias id.
         """
         params = {
             'search[name_matches]': name_matches,
             'search[antecedent_name]': antecedent_name,
+            'search[category]': category,
             'search[id]': tag_id
             }
         params.update(extra_params)
